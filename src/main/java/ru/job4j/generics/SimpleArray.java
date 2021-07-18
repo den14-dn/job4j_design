@@ -4,10 +4,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleArray<T> implements Iterator<T> {
+public class SimpleArray<T> implements Iterable<T> {
     private Object[] elements;
     private int size;
-    private int cursor;
 
     public SimpleArray(int capacity) {
         if (capacity >= 0) {
@@ -17,7 +16,7 @@ public class SimpleArray<T> implements Iterator<T> {
         }
     }
 
-    boolean add(T element) {
+    public boolean add(T element) {
         if (size < elements.length) {
             elements[size++] = element;
             return true;
@@ -25,33 +24,40 @@ public class SimpleArray<T> implements Iterator<T> {
         return false;
     }
 
-    void set(int index, T element) {
+    public void set(int index, T element) {
         Objects.checkIndex(index, size);
         elements[index] = element;
     }
 
-    void remove(int index) {
+    public void remove(int index) {
         Objects.checkIndex(index, size);
         System.arraycopy(elements, index + 1, elements, index, size - index);
         elements[index] = null;
         size--;
     }
 
-    T get(int index) {
+    public T get(int index) {
         Objects.checkIndex(index, size);
         return (T) elements[index];
     }
 
     @Override
-    public boolean hasNext() {
-        return cursor < size;
+    public Iterator<T> iterator() {
+        return new SimpleArrayIterator();
     }
 
-    @Override
-    public T next() {
-        if (cursor >= size) {
-            throw new NoSuchElementException();
+    private class SimpleArrayIterator implements Iterator<T> {
+        private int cursor;
+        @Override
+        public boolean hasNext() {
+            return cursor < size;
         }
-        return (T) elements[cursor++];
+        @Override
+        public T next() {
+            if (cursor >= size) {
+                throw new NoSuchElementException();
+            }
+            return (T) elements[cursor++];
+        }
     }
 }
