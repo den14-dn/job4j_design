@@ -18,7 +18,7 @@ public class MatrixItTest {
     }
     @Test
     public void whenFirstEmptyThenNext() {
-        int [][] in = {
+        int[][] in = {
                 {},
                 {1}
         };
@@ -27,7 +27,7 @@ public class MatrixItTest {
     }
     @Test
     public void whenFirstEmptyThenHashNext() {
-        int [][] in = {
+        int[][] in = {
                 {},
                 {1}
         };
@@ -36,7 +36,7 @@ public class MatrixItTest {
     }
     @Test
     public void whenRowHasDiffSize() {
-        int [][] in = {
+        int[][] in = {
                 {1}, {2, 3}
         };
         MatrixIt it = new MatrixIt(in);
