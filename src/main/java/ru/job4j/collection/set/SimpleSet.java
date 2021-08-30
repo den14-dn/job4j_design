@@ -5,7 +5,6 @@ import ru.job4j.generics.SimpleArray;
 import java.util.Iterator;
 
 public class SimpleSet<T> implements Set<T> {
-    private int size;
 
     private SimpleArray<T> set = new SimpleArray<>();
 
@@ -15,7 +14,6 @@ public class SimpleSet<T> implements Set<T> {
             return false;
         }
         set.add(value);
-        size++;
         return true;
     }
 
@@ -32,7 +30,7 @@ public class SimpleSet<T> implements Set<T> {
     }
 
     public int size() {
-        return size;
+        return set.size();
     }
 
     @Override
