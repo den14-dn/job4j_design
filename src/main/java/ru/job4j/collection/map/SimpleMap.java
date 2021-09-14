@@ -20,6 +20,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
             ++modCount;
             if (++count > (capacity * LOAD_FACTOR)) {
                 expand();
+                index = indexFor(hash(key.hashCode()));
             }
             table[index] = new MapEntry<>(key, value);
             return true;
@@ -31,14 +32,17 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         int index = indexFor(hash(key.hashCode()));
         MapEntry<K, V> e = table[index];
-        return (e == null) ? null : e.value;
+        if (e == null || !e.key.equals(key)) {
+            return null;
+        }
+        return e.value;
     }
 
     @Override
     public boolean remove(K key) {
         int index = indexFor(hash(key.hashCode()));
-        MapEntry mapEntry = table[index];
-        if (mapEntry == null) {
+        MapEntry e = table[index];
+        if (e == null || !e.key.equals(key)) {
             return false;
         }
         table[index] = null;
@@ -58,7 +62,13 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return cursor < count;
+                while (cursor < table.length) {
+                    if (table[cursor] != null) {
+                        return true;
+                    }
+                    ++cursor;
+                }
+                return false;
             }
 
             @Override
@@ -66,10 +76,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                if (cursor >= count) {
+                if (cursor >= table.length) {
                     throw new NoSuchElementException();
                 }
-                return table[cursor++].key;
+                return table[cursor].key;
             }
         };
     }
