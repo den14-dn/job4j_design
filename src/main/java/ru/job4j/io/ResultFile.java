@@ -4,7 +4,7 @@ import java.io.FileOutputStream;
 
 public class ResultFile {
     public static void main(String[] args) {
-        String fileName = "C:\\Users\\shubko\\Downloads\\result.txt";
+        String fileName = "result.txt";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             int size = 5;
             for (int i = 0; i < size;) {
