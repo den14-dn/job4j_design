@@ -33,4 +33,12 @@ public class ConfigTest {
         Config config = new Config(path);
         config.load();
     }
+
+    @Test
+    public void whenPairWithoutValue() {
+        String path = "./data/pair_without_value.properties";
+        Config config = new Config(path);
+        config.load();
+        assertThat(config.value("surname"), is(""));
+    }
 }
