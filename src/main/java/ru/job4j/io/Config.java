@@ -23,6 +23,9 @@ public class Config {
                     continue;
                 }
                 int cursor = line.indexOf("=");
+                if (cursor == -1) {
+                    throw new IllegalArgumentException();
+                }
                 String key = line.substring(0, cursor);
                 String value = line.substring(++cursor);
                 if (key.isEmpty()) {
@@ -30,8 +33,8 @@ public class Config {
                 }
                 values.put(key, value);
             }
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
