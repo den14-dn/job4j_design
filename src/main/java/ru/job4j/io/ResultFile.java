@@ -11,7 +11,6 @@ public class ResultFile {
                         new FileOutputStream("result.txt")
                 )
         )) {
-            //out.write("Hello, world!");
             out.printf("%s%n", "some string");
             out.printf("%d%n", 10);
         } catch (Exception e) {
