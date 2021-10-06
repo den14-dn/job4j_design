@@ -21,14 +21,12 @@ public class Generics {
         gen.printObject(third);
         System.out.println();
 
-//        gen.printBoundWildCard(first);
         gen.printBoundWildCard(second);
         gen.printBoundWildCard(third);
         System.out.println();
 
         gen.printLowerWildCard(first);
         gen.printLowerWildCard(second);
-//        gen.printLowerWildCard(third);
         System.out.println();
     }
 
