@@ -8,14 +8,20 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class Search {
-    public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
-            throw new IllegalArgumentException("File extension is null. Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION");
-        } else if (args.length == 0) {
-            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION");
-        }
+    public static void main(String[] args) throws IOException, IllegalArgumentException {
+        validateArgs(args);
         Path start = Paths.get(args[0]);
         search(start, p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
+    }
+
+    private static void validateArgs(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION");
+        } else if (args.length == 1) {
+            throw new IllegalArgumentException("File extension is null. Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION");
+        } else if (!Paths.get(args[0]).toFile().isDirectory()) {
+            throw new IllegalArgumentException("Path is not directory. Usage java -jar dir.jar ROOT_FOLDER FILE_EXTENSION");
+        }
     }
 
     public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
