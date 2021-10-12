@@ -23,7 +23,7 @@ public class ArgsName {
             } else if (params.length == 1) {
                 throw new IllegalArgumentException("Parameter doesn't contains value.");
             }
-            values.put(params[0].replace("-", ""), params[1]);
+            values.put(params[0].substring(1), params[1]);
         }
     }
 
