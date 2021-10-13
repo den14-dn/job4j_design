@@ -16,12 +16,10 @@ public class ArgsName {
         }
         for (String el : args) {
             String[] params = el.split("=");
-            if (params.length == 0) {
+            if (params.length != 2) {
                 throw new IllegalArgumentException("Array's element doesn't contains params.");
             } else if (params[0].isEmpty()) {
                 throw new IllegalArgumentException("Parameter doesn't contains key.");
-            } else if (params.length == 1) {
-                throw new IllegalArgumentException("Parameter doesn't contains value.");
             }
             values.put(params[0].substring(1), params[1]);
         }
