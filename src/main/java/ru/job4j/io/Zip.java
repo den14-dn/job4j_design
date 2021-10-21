@@ -24,23 +24,16 @@ public class Zip {
 
     }
 
-    public static void packSingleFile(File source, File target) {
-        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
-                zip.write(out.readAllBytes());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static void valid(ArgsName argsName) {
+        if (argsName.get("d") == null) {
+            throw new IllegalArgumentException("Isn't argument directory");
+        } else if (argsName.get("e") == null) {
+            throw new IllegalArgumentException("Isn't argument exclude");
+        } else if (argsName.get("o") == null) {
+            throw new IllegalArgumentException("Isn't argument output");
+        } else if (!Paths.get(argsName.get("d")).toFile().isDirectory()) {
+            throw new IllegalArgumentException("Directory '" + argsName.get("d") + " doesn't exist");
         }
-    }
-
-    private static boolean valid(ArgsName argsName) {
-        return (argsName.get("d") != null
-                && argsName.get("e") != null
-                && argsName.get("o") != null
-                && Paths.get(argsName.get("d")).toFile().isDirectory()
-        );
     }
 
     private static List<File> getListFiles(String path, String extension) throws IOException {
@@ -54,9 +47,7 @@ public class Zip {
 
     public static void main(String[] args) {
         ArgsName argsName = ArgsName.of(args);
-        if (!valid(argsName)) {
-            throw new IllegalArgumentException();
-        }
+        valid(argsName);
         try {
             List<File> files = getListFiles(argsName.get("d"), argsName.get("e").substring(1));
             packFiles(files, Paths.get(argsName.get("o")).toFile());
