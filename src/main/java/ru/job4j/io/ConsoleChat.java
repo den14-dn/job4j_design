@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -13,6 +14,7 @@ public class ConsoleChat {
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
+    private List<String> responses;
 
     public ConsoleChat(String path, String botAnswers) {
         this.path = path;
@@ -20,7 +22,7 @@ public class ConsoleChat {
     }
 
     public void run() throws IOException {
-        List<String> responses = readPhrases();
+        readPhrases();
         List<String> log = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         String userPhrase = "";
@@ -45,16 +47,16 @@ public class ConsoleChat {
         saveLog(log);
     }
 
-    private List<String> readPhrases() throws IOException {
+    private void readPhrases() throws IOException {
         try (BufferedReader in = new BufferedReader(new FileReader(botAnswers, UTF_8))) {
-            return in.lines().toList();
+            responses = in.lines().collect(Collectors.toList());
         }
     }
 
     private void saveLog(List<String> log) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(path, UTF_8))) {
             for (String el : log) {
-                out.write(el);
+                out.write(el + '\n');
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,7 +64,7 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) throws IOException {
-        ConsoleChat cc = new ConsoleChat("./data/chatLogs", "./data/botAnswers");
+        ConsoleChat cc = new ConsoleChat("./data/chatLogs.txt", "./data/botAnswers.txt");
         cc.run();
     }
 }
