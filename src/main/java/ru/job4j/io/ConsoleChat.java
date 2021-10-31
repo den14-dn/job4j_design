@@ -21,7 +21,7 @@ public class ConsoleChat {
         this.botAnswers = botAnswers;
     }
 
-    public void run() throws IOException {
+    public void run() {
         readPhrases();
         List<String> log = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
@@ -47,9 +47,11 @@ public class ConsoleChat {
         saveLog(log);
     }
 
-    private void readPhrases() throws IOException {
+    private void readPhrases() {
         try (BufferedReader in = new BufferedReader(new FileReader(botAnswers, UTF_8))) {
             responses = in.lines().collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -63,7 +65,7 @@ public class ConsoleChat {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ConsoleChat cc = new ConsoleChat("./data/chatLogs.txt", "./data/botAnswers.txt");
         cc.run();
     }
