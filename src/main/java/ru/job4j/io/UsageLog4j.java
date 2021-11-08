@@ -7,6 +7,10 @@ public class UsageLog4j {
     private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
 
     public static void main(String[] args) {
-        LOG.debug("Boolean : {}, int : {}, long : {}, char : {}, float : {}, double : {}, byte : {}, short : {}", true, 32, 65999L, 'f', 30.4f, 31.2, (byte) 127, (short) 32767);
+        try {
+            throw new Exception("Not supported code");
+        } catch (Exception e) {
+            LOG.error("Exception in log example", e);
+        }
     }
 }
