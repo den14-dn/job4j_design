@@ -1,8 +1,8 @@
 <?xml version="1.1" encoding="UTF-8" ?>
-<person sex="female" age="35" married="true">
-    <contact phone="+7(999)123-44-55"/>
-    <statuses>
-        <status>mother</status>
-        <status>wife</status>
-    </statuses>
-</person>
+<car fourMatic="true" weight="2300" name="Mercedes G500">
+    <engine config="V6" volume="6.3"/>
+    <specifications>
+        <specification>black color</specification>
+        <specification>four-wheel drive</specification>
+    </specifications>
+</car>
