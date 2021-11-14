@@ -1,8 +1,5 @@
 package ru.job4j.serialization;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -52,7 +49,7 @@ public class Car {
         JAXBContext context = JAXBContext.newInstance(Car.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        String xml = "";
+        String xml;
 
         try (StringWriter writer = new StringWriter()) {
             marshaller.marshal(car, writer);
