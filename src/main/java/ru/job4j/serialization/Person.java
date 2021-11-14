@@ -1,14 +1,13 @@
 package ru.job4j.serialization;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.*;
-import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @XmlRootElement(name = "person")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -24,7 +23,9 @@ public class Person {
     @XmlElement(name = "status")
     private String[] statuses;
 
-    public Person() {  }
+    public Person() {
+
+    }
 
     public Person(String sex, int age, boolean married, Contact contact, String... statuses) {
         this.sex = sex;
@@ -32,6 +33,26 @@ public class Person {
         this.married = married;
         this.contact = contact;
         this.statuses = statuses;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public boolean isMarried() {
+        return married;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getStatuses() {
+        return statuses;
     }
 
     @Override
@@ -46,18 +67,24 @@ public class Person {
 
     public static void main(String[] args) throws JAXBException {
 
+        JSONObject jsonContact = new JSONObject("{\"phone\":\"+7(924)111-111-11-11\"}");
+
+        List<String> list = new ArrayList<>();
+        list.add("Student");
+        list.add("Free");
+        JSONArray jsonStatuses = new JSONArray(list);
+
         final Person person = new Person("male", 30, false, new Contact("11-111"), "worker", "married");
 
-        JAXBContext context = JAXBContext.newInstance(Person.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("sex", person.getSex());
+        jsonObject.put("age", person.getAge());
+        jsonObject.put("married", person.isMarried());
+        jsonObject.put("contact", jsonContact);
+        jsonObject.put("statuses", jsonStatuses);
 
-        try (StringWriter writer = new StringWriter()) {
-            marshaller.marshal(person, writer);
-            String result = writer.getBuffer().toString();
-            System.out.println(result);
-        } catch (Exception e) {
+        System.out.println(jsonObject.toString());
 
-        }
+        System.out.println(new JSONObject(person).toString());
     }
 }

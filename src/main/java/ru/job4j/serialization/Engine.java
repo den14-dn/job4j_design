@@ -17,6 +17,14 @@ public class Engine {
         this.volume = volume;
     }
 
+    public String getConfig() {
+        return config;
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
     @Override
     public String toString() {
         return "Engine{"

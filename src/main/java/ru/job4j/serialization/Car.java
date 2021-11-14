@@ -1,12 +1,12 @@
 package ru.job4j.serialization;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.xml.bind.annotation.*;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @XmlRootElement(name = "car")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -22,7 +22,9 @@ public class Car {
     @XmlElement(name = "specification")
     private String[] specification;
 
-    public Car() { }
+    public Car() {
+
+    }
 
     public Car(boolean fourMatic, int weight, String name, Engine engine, String... specification) {
         this.fourMatic = fourMatic;
@@ -30,6 +32,26 @@ public class Car {
         this.name = name;
         this.engine = engine;
         this.specification = specification;
+    }
+
+    public boolean isFourMatic() {
+        return fourMatic;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public String[] getSpecification() {
+        return specification;
     }
 
     @Override
@@ -44,24 +66,25 @@ public class Car {
     }
 
     public static void main(String[] args) throws Exception {
+
+        JSONObject jsonEngine = new JSONObject("{\"config\":\"V8\", \"volume\":4.5}");
+
+        List<String> list = new ArrayList<>();
+        list.add("red color");
+        list.add("sedan");
+        JSONArray jsonSpecifications = new JSONArray(list);
+
         final Car car = new Car(true, 2300, "Mercedes G500", new Engine("V6", 6.3), "black color", "four-wheel drive");
 
-        JAXBContext context = JAXBContext.newInstance(Car.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        String xml;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("fourMatic", car.isFourMatic());
+        jsonObject.put("weight", car.getWeight());
+        jsonObject.put("name", car.getName());
+        jsonObject.put("engine", jsonEngine);
+        jsonObject.put("specification", jsonSpecifications);
 
-        try (StringWriter writer = new StringWriter()) {
-            marshaller.marshal(car, writer);
-            xml = writer.getBuffer().toString();
-            System.out.println(xml);
-        }
+        System.out.println(jsonObject.toString());
 
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-
-        try (StringReader reader = new StringReader(xml)) {
-            Car result = (Car) unmarshaller.unmarshal(reader);
-            System.out.println(result);
-        }
+        System.out.println(new JSONObject(car).toString());
     }
 }
