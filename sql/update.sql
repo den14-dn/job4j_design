@@ -1,0 +1,1 @@
+update warehouses set destination = 'На Московской, дом 22А';
