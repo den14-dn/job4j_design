@@ -7,7 +7,7 @@ create table license(
 create table driver(
 	id serial primary key,
 	name varchar(255),
-	license int references license(id)
+	license int references license(id) unique
 );
 
 insert into license(seria, number) values (6302, 321678);
