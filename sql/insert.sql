@@ -1,1 +1,0 @@
-insert into warehouses(enabled, destination, square) values(true, 'На Московской', 3655);
