@@ -37,15 +37,25 @@ insert into comments(name, item_id) values ('Узкий цоколь', 1);
 insert into comments(name, item_id) values ('Расклеить объявления', 2);
 
 select 
-	item.name as item,
-	category.name as category,
-	status.name as status,
-	comment.name as comment
+	it.name as item,
+	cat.name as category
 from
-	items as item
-	inner join categories as category
-		on item.category_id = category.id
-	inner join statuses as status
-		on item.status_id = status.id
-	inner join comments as comment
-		on item.id = comment.item_id
+	items as it
+	join categories as cat
+		on it.category_id = cat.id;
+
+select 
+	it.name as item,
+	st.name as status
+from
+	items as it
+	join statuses as st
+		on it.status_id = st.id;
+
+select 
+	it.name as item,
+	com.name as comment
+from
+	items as it
+	join comments as com
+		on it.id = com.item_id;
