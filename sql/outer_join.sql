@@ -72,4 +72,4 @@ create table teens(
 insert into teens(name, gender) values ('Иван', 'm');
 insert into teens(name, gender) values ('Ольга', 'w');
 
-select n1.name as a, n2.name as b from teens n1 cross join teens n2;
+select n1.name as a, n2.name as b from teens n1 cross join teens n2 where n1.name <> n2.name;
