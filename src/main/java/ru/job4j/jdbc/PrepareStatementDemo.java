@@ -1,6 +1,6 @@
 package ru.job4j.jdbc;
 
-import ru.job4j.collection.List;
+import java.util.List;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ public class PrepareStatementDemo {
     public void insert(City city) {
         try (PreparedStatement statement =
                 connection.prepareStatement("insert into cities(name, population) values(?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, city.getName());
-            statement.setInt(2, city.getPopulation());
+            statement.setString(1, city.name);
+            statement.setInt(2, city.population);
             statement.execute();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    city.setId(generatedKeys.getInt(1));
+                    city.id = generatedKeys.getInt(1);
                 }
             }
         } catch (Exception e) {
@@ -40,9 +40,9 @@ public class PrepareStatementDemo {
         boolean result = false;
         try (PreparedStatement statement =
                      connection.prepareStatement("update cities set name = ?, population = ? where id = ?")) {
-            statement.setString(1, city.getName());
-            statement.setInt(2, city.getPopulation());
-            statement.setInt(3, city.getId());
+            statement.setString(1, city.name);
+            statement.setInt(2, city.population);
+            statement.setInt(3, city.id);
             result = statement.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,5 +78,17 @@ public class PrepareStatementDemo {
             e.printStackTrace();
         }
         return cities;
+    }
+
+    public class City {
+        int id;
+        String name;
+        int population;
+
+        public City(int id, String name, int population) {
+            this.id = id;
+            this.name = name;
+            this.population = population;
+        }
     }
 }
