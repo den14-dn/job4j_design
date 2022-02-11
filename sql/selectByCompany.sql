@@ -6,29 +6,17 @@ from
 	join company c
 	on p.company_id = c.id
 where 
-	p.company_id <> 1;
+	p.company_id <> 5;
 
 select
-	t1.company,
-	t1.count
+	c.name company,
+	count(p.id) count
 from
-	(select 
-		c.name company,
-		count(p.id) count
-	from company c
-		join person p
-		on c.id = p.company_id
-	group by
-		c.name) as t1
-	join (select
-				max(t1.count) count
-		from
-			(select 
-				count(p.id) count
-			from company c
-				join person p
-				on c.id = p.company_id
-			group by
-				c.name) as t1) as t2
-	on t1.count = t2.count
+	company c
+	join person p
+	on c.id = p.company_id
+group by
+	c.name
+having 
+	count(p.id) = (select count(id) from person group by company_id order by count(id) desc limit 1);
 	
