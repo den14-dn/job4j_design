@@ -37,7 +37,10 @@ public class Find {
         objFind.validateArgs(argsName);
         Predicate<Path> condition = e -> e.getFileName().toString().equalsIgnoreCase(argsName.get("n"));
         if (argsName.get("t").equalsIgnoreCase("mask")) {
-            condition = e -> e.getFileName().toString().endsWith(argsName.get("n").substring(1));
+            String regex = argsName.get("n").startsWith("*") ? ".".concat(argsName.get("n")) : ".*".concat(argsName.get("n"));
+            condition = e -> e.getFileName().toString().matches(regex);
+        } else if (argsName.get("t").equalsIgnoreCase("regex")) {
+            condition = e -> e.getFileName().toString().matches(argsName.get("t"));
         }
         objFind.search(Paths.get(argsName.get("d")), condition, argsName.get("o"));
     }
