@@ -5,9 +5,20 @@ import ru.job4j.io.SearchFiles;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class Find {
+    Map<String, Function<String, Predicate<Path>>> conditions = new HashMap<>();
+
+    public Find() {
+        conditions.put("mask", new FindByMask());
+        conditions.put("regex", new FindByRegex());
+        conditions.put("fileName", new FindByFileName());
+    }
+
     private void validateArgs(ArgsName args) {
         String command = "java -jar find.jar -d=ROOT_FOLDER -n=NAME_FILE -t=TYPE_SEARCH -o=FILE_RESULT";
         if (args.get("d") == null || !Paths.get(args.get("d")).toFile().isDirectory()) {
@@ -35,13 +46,9 @@ public class Find {
         ArgsName argsName = ArgsName.of(args);
         Find objFind = new Find();
         objFind.validateArgs(argsName);
-        Predicate<Path> condition = e -> e.getFileName().toString().equalsIgnoreCase(argsName.get("n"));
-        if (argsName.get("t").equalsIgnoreCase("mask")) {
-            String regex = argsName.get("n").startsWith("*") ? ".".concat(argsName.get("n")) : ".*".concat(argsName.get("n"));
-            condition = e -> e.getFileName().toString().matches(regex);
-        } else if (argsName.get("t").equalsIgnoreCase("regex")) {
-            condition = e -> e.getFileName().toString().matches(argsName.get("t"));
-        }
+        Predicate<Path> condition = objFind.conditions
+                .get(argsName.get("t").toLowerCase())
+                .apply(argsName.get("n"));
         objFind.search(Paths.get(argsName.get("d")), condition, argsName.get("o"));
     }
 }
