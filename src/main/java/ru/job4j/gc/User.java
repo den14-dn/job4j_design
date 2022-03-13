@@ -28,7 +28,6 @@ public class User {
         for (int i = 0; i < 40000; i++) {
             new User();
         }
-//        System.gc();
         info();
     }
 }
