@@ -11,12 +11,11 @@ public class Emulator {
         String file = new Scanner(System.in).nextLine();
         new Emulator().validateParameters(dir, file);
         AbstractCache cache = new DirFileCache(dir);
-        cache.put(file, cache.load(file));
         System.out.println(cache.get(file).toString());
     }
 
     private void validateParameters(String dir, String file) {
-        if (!Path.of(dir, dir).toFile().isDirectory()) {
+        if (!Path.of(dir).toFile().isDirectory()) {
             throw new IllegalArgumentException("Expected caching directory: ".concat(dir));
         }
         if (!Path.of(dir, file).toFile().isFile()) {
