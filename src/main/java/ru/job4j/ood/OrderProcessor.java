@@ -11,4 +11,8 @@ public class OrderProcessor {
     public void informCustomer(Order order, String message) {
         sendToCustomer(order.getCustomer(), message);
     }
+
+    private void sendToBank(float cost) { }
+
+    private void sendToCustomer(String nameCustomer, String message) { }
 }
