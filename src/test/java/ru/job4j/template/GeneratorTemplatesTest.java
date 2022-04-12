@@ -17,7 +17,7 @@ public class GeneratorTemplatesTest {
         Map<String, String> map = new HashMap<>();
         map.put("name", "Denis");
         map.put("subject", "you");
-        String expect = "I am a SpiderMan, Who are you?";
+        String expect = "I am a Denis, Who are you?";
         String rst = gen.produce(template, map);
         assertThat(rst, is(expect));
     }
