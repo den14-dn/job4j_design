@@ -1,13 +1,22 @@
 package ru.job4j.design.srp;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Test;
+
+import javax.xml.bind.JAXBException;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class ReportEngineTest {
     @Test
-    public void whenOldGenerated() {
+    public void whenOldGenerated() throws JAXBException, IOException {
         MemStore store = new MemStore();
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 100);
@@ -25,7 +34,7 @@ public class ReportEngineTest {
     }
 
     @Test
-    public void whenGeneratedForDeveloper() {
+    public void whenGeneratedForDeveloper() throws JAXBException, IOException {
         MemStore store = new MemStore();
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 100);
@@ -49,7 +58,7 @@ public class ReportEngineTest {
     }
 
     @Test
-    public void whenGeneratedForAccounting() {
+    public void whenGeneratedForAccounting() throws JAXBException, IOException {
         MemStore store = new MemStore();
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Ivan", now, now, 100);
@@ -67,7 +76,7 @@ public class ReportEngineTest {
     }
 
     @Test
-    public void whenGeneratedForHR() {
+    public void whenGeneratedForHR() throws JAXBException, IOException {
         MemStore store = new MemStore();
         Calendar now = Calendar.getInstance();
         Employee worker1 = new Employee("Ivan", now, now, 100);
@@ -90,5 +99,40 @@ public class ReportEngineTest {
                 .append(worker1.getSalary()).append(";")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenGeneratedOnXml() throws JAXBException, IOException {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        store.add(worker);
+        Report engine = new ReportEngineXML(store);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        StringBuilder expect = new StringBuilder()
+                .append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n")
+                .append("<employees>\n")
+                .append("    <employee>\n")
+                .append("        <fired>").append(dateFormat.format(worker.getFired().getTime())).append("</fired>\n")
+                .append("        <hired>").append(dateFormat.format(worker.getHired().getTime())).append("</hired>\n")
+                .append("        <name>").append(worker.getName()).append("</name>\n")
+                .append("        <salary>").append(worker.getSalary()).append("</salary>\n")
+                .append("    </employee>\n")
+                .append("</employees>\n");
+        assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenGeneratedOnJson() throws JAXBException, IOException {
+        MemStore store = new MemStore();
+        Calendar now = Calendar.getInstance();
+        Employee worker = new Employee("Ivan", now, now, 100);
+        store.add(worker);
+        Report engine = new ReportEngineJSON(store);
+        Employees employees = new Employees(List.of(worker));
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        String expect = gson.toJson(employees);
+        assertThat(engine.generate(em -> true), is(expect));
     }
 }
