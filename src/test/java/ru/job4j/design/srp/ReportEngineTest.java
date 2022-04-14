@@ -1,6 +1,5 @@
 package ru.job4j.design.srp;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -56,13 +55,14 @@ public class ReportEngineTest {
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
         Report engine = new ReportEngineAccounting(store);
+        var rate = ((ReportEngineAccounting) engine).getRate();
         StringBuilder expect = new StringBuilder()
                 .append("Name; Hired; Fired; Salary")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
                 .append(worker.getHired()).append(";")
                 .append(worker.getFired()).append(";")
-                .append(worker.getSalary() * 1.13).append(";")
+                .append(worker.getSalary() * rate).append(";")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
