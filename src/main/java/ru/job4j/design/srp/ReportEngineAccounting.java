@@ -4,14 +4,10 @@ import java.util.function.Predicate;
 
 public class ReportEngineAccounting implements Report {
     private Store store;
-    private float rate = 1.13F;
+    public static final float RATE = 1.13F;
 
     public ReportEngineAccounting(Store store) {
         this.store = store;
-    }
-
-    public float getRate() {
-        return rate;
     }
 
     @Override
@@ -23,7 +19,7 @@ public class ReportEngineAccounting implements Report {
             text.append(employee.getName()).append(";")
                     .append(employee.getHired()).append(";")
                     .append(employee.getFired()).append(";")
-                    .append(employee.getSalary() * rate).append(";")
+                    .append(employee.getSalary() * RATE).append(";")
                     .append(System.lineSeparator());
         }
         return text.toString();

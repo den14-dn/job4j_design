@@ -55,14 +55,13 @@ public class ReportEngineTest {
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
         Report engine = new ReportEngineAccounting(store);
-        var rate = ((ReportEngineAccounting) engine).getRate();
         StringBuilder expect = new StringBuilder()
                 .append("Name; Hired; Fired; Salary")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
                 .append(worker.getHired()).append(";")
                 .append(worker.getFired()).append(";")
-                .append(worker.getSalary() * rate).append(";")
+                .append(worker.getSalary() * ReportEngineAccounting.RATE).append(";")
                 .append(System.lineSeparator());
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
