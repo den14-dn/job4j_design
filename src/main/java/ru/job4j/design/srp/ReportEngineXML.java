@@ -15,7 +15,7 @@ public class ReportEngineXML implements Report {
     }
 
     @Override
-    public String generate(Predicate<Employee> filter) throws JAXBException, IOException {
+    public String generate(Predicate<Employee> filter) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(Employees.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -24,6 +24,8 @@ public class ReportEngineXML implements Report {
         try (StringWriter writer = new StringWriter()) {
             marshaller.marshal(employees, writer);
             text = writer.getBuffer().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return text;
     }

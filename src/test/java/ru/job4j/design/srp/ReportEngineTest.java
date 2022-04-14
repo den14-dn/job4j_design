@@ -1,18 +1,12 @@
 package ru.job4j.design.srp;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.junit.Test;
-
 import javax.xml.bind.JAXBException;
-
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 public class ReportEngineTest {
     @Test
@@ -126,13 +120,24 @@ public class ReportEngineTest {
     public void whenGeneratedOnJson() throws JAXBException, IOException {
         MemStore store = new MemStore();
         Calendar now = Calendar.getInstance();
+        now.set(2022, 4, 14, 0, 0, 0);
         Employee worker = new Employee("Ivan", now, now, 100);
         store.add(worker);
         Report engine = new ReportEngineJSON(store);
-        Employees employees = new Employees(List.of(worker));
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        String expect = gson.toJson(employees);
+        String expect = "{\"employees\":["
+                + "{"
+                + "\"name\":\"Ivan\","
+                + "\"hired\":{"
+                + "\"year\":2022,\"month\":4,\"dayOfMonth\":14,\"hourOfDay\":0,\"minute\":0,\"second\":0"
+                + "},"
+                + "\"fired\":{"
+                + "\"year\":2022,\"month\":4,\"dayOfMonth\":14,\"hourOfDay\":0,\"minute\":0,\"second\":0"
+                + "},"
+                + "\"salary\":100.0"
+                + "}"
+                + "]"
+                + "}";
         assertThat(engine.generate(em -> true), is(expect));
+
     }
 }
