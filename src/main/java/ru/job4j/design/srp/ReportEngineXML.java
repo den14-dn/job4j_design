@@ -15,16 +15,16 @@ public class ReportEngineXML implements Report {
     }
 
     @Override
-    public String generate(Predicate<Employee> filter) throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(Employees.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        Employees employees = new Employees(store.findBy(filter));
+    public String generate(Predicate<Employee> filter) {
         String text = "";
+        Employees employees = new Employees(store.findBy(filter));
         try (StringWriter writer = new StringWriter()) {
+            JAXBContext context = JAXBContext.newInstance(Employees.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(employees, writer);
             text = writer.getBuffer().toString();
-        } catch (IOException e) {
+        } catch (IOException | JAXBException e) {
             e.printStackTrace();
         }
         return text;
