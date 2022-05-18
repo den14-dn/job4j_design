@@ -6,7 +6,8 @@ import java.util.List;
 public class Trash implements Store {
     private final List<Food> foods = new ArrayList<>();
 
-    private boolean accept(Food food) {
+    @Override
+    public boolean accept(Food food) {
         int percent = expirationDateExpired(food);
         return percent >= 100;
     }
@@ -17,12 +18,7 @@ public class Trash implements Store {
     }
 
     @Override
-    public void remove(Food food) {
-        foods.remove(food);
-    }
-
-    @Override
     public List<Food> getAll() {
-        return foods;
+        return List.copyOf(foods);
     }
 }

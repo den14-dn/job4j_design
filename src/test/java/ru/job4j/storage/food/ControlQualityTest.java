@@ -11,45 +11,19 @@ import static org.junit.Assert.assertThat;
 public class ControlQualityTest {
     @Test
     public void whenFoodHasIntoTrash() {
-        List<Food> foods = List.of(
-                new Food("Простоквашино",
-                        LocalDate.of(2021, 5, 29),
-                        LocalDate.of(2021, 5, 16),
-                        119.90f,
-                        10)
-        );
-
+        Food food = new Food("Простоквашино", LocalDate.now(), LocalDate.now().minusDays(14), 119.90f, 10);
         Store store = new Trash();
-        List<Store> stores = List.of(store);
-
-        ControlQuality controlQuality = new ControlQuality(stores);
-
-        for (Food food : foods) {
-            controlQuality.distribution(food);
-        }
-
+        ControlQuality controlQuality = new ControlQuality(List.of(store));
+        controlQuality.distribution(food);
         assertThat(store.getAll().size(), is(1));
     }
 
     @Test
     public void whenIntoTrashIsEmpty() {
-        List<Food> foods = List.of(
-                new Food("Простоквашино",
-                        LocalDate.of(2042, 5, 29),
-                        LocalDate.of(2022, 5, 16),
-                        119.90f,
-                        10)
-        );
-
+        Food food = new Food("Простоквашино", LocalDate.now().plusDays(14), LocalDate.now(), 119.90f, 10);
         Store store = new Trash();
-        List<Store> stores = List.of(store);
-
-        ControlQuality controlQuality = new ControlQuality(stores);
-
-        for (Food food : foods) {
-            controlQuality.distribution(food);
-        }
-
+        ControlQuality controlQuality = new ControlQuality(List.of(store));
+        controlQuality.distribution(food);
         assertThat(store.getAll().size(), is(0));
     }
 }

@@ -5,8 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public interface Store {
+    boolean accept(Food food);
     boolean add(Food food);
-    void remove(Food food);
     List<Food> getAll();
 
     default int expirationDateExpired(Food food) {
