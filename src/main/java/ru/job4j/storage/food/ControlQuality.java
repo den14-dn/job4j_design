@@ -1,12 +1,19 @@
 package ru.job4j.storage.food;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.List;
 
 public class ControlQuality {
-    public int getCondition(Food food) {
-        int base = Period.between(food.getExpiryDate(), food.getCreateDate()).getDays();
-        int rest = Period.between(food.getExpiryDate(), LocalDate.now()).getDays();
-        return rest / base * 100;
+    private final List<Store> stores;
+
+    public ControlQuality(List<Store> stores) {
+        this.stores = stores;
+    }
+
+    public void distribution(Food food) {
+        for (Store store : stores) {
+            if (!store.add(food)) {
+                store.remove(food);
+            }
+        }
     }
 }

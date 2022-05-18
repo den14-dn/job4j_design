@@ -9,11 +9,12 @@ public class Food {
     private float price;
     private int discount;
 
-    public Food(String name, LocalDate expiryDate, LocalDate createDate, float price) {
+    public Food(String name, LocalDate expiryDate, LocalDate createDate, float price, int discount) {
         this.name = name;
         this.expiryDate = expiryDate;
         this.createDate = createDate;
         this.price = price;
+        this.discount = discount;
     }
 
     public String getName() {
@@ -36,8 +37,8 @@ public class Food {
         return discount;
     }
 
-    public void setDiscount(int discount) {
-        this.discount = discount;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     @Override

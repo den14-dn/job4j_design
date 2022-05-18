@@ -4,26 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Trash implements Store {
-    private List<Food> foods = new ArrayList<>();
-    private final ControlQuality controlQuality;
+    private final List<Food> foods = new ArrayList<>();
 
-    public Trash(ControlQuality controlQuality) {
-        this.controlQuality = controlQuality;
-    }
-
-    @Override
-    public boolean test(Food food) {
-        int percent = controlQuality.getCondition(food);
+    private boolean accept(Food food) {
+        int percent = expirationDateExpired(food);
         return percent >= 100;
     }
 
     @Override
-    public void add(Food food) {
-        foods.add(food);
+    public boolean add(Food food) {
+        return accept(food) && foods.add(food);
     }
 
     @Override
     public void remove(Food food) {
-        foods.removeIf(o -> o.equals(food));
+        foods.remove(food);
+    }
+
+    @Override
+    public List<Food> getAll() {
+        return foods;
     }
 }
