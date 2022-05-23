@@ -8,6 +8,7 @@ public interface Store {
     boolean accept(Food food);
     boolean add(Food food);
     List<Food> getAll();
+    void clear();
 
     default int expirationDateExpired(Food food) {
         long base = ChronoUnit.DAYS.between(food.getCreateDate(), food.getExpiryDate());
