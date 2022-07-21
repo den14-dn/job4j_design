@@ -3,6 +3,7 @@ package ru.job4j.design.isp.menu;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public interface Menu extends Iterable<Menu.MenuItemInfo> {
     String ROOT = null;
@@ -16,6 +17,13 @@ public interface Menu extends Iterable<Menu.MenuItemInfo> {
         private final List<String> children;
         private final ActionDelegate actionDelegate;
         private final String number;
+
+        public MenuItemInfo(MenuItem menuItem, String number) {
+            this.name = menuItem.getName();
+            this.children = menuItem.getChildren().stream().map(MenuItem::getName).collect(Collectors.toList());
+            this.actionDelegate = menuItem.getActionDelegate();
+            this.number = number;
+        }
 
         public MenuItemInfo(String name, List<String> children, ActionDelegate actionDelegate, String number) {
             this.name = name;
