@@ -1,16 +1,42 @@
 package ru.job4j.design.isp.menu;
 
+import java.util.List;
+import java.util.Scanner;
+
 public class SimpleApp {
     public static void main(String[] args) {
         ActionDelegate action = System.out::println;
 
-        Menu menu = new SimpleMenu();
-        menu.add(Menu.ROOT, "Сходить в магазин", action);
-        menu.add(Menu.ROOT, "Покормить собаку", action);
-        menu.add("Сходить в магазин", "Купить продукты", action);
-        menu.add("Купить продукты", "Купить хлеб", action);
-        menu.add("Купить продукты", "Купить молоко", action);
+        List<String> listActions = List.of(
+                "1. Ввести родителя",
+                "2. Ввести потомка",
+                "3. Вывести меню"
+        );
 
-        new SimpleMenuPrinter().print(menu);
+        Menu menu = new SimpleMenu();
+        MenuPrinter menuPrinter = new SimpleMenuPrinter();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+
+            System.out.println("Введите имя предка или null: ");
+            String parent = scanner.nextLine();
+            System.out.println("Введите потомка: ");
+            String child = scanner.nextLine();
+
+            if (parent.toLowerCase().equals("null")) {
+                parent = Menu.ROOT;
+            }
+            menu.add(parent, child, SimpleMenu.STUB_ACTION);
+
+            System.out.println("Вывести меню: true/false");
+            boolean rst = scanner.nextBoolean();
+            scanner.nextLine();
+            if (rst) {
+                menuPrinter.print(menu);
+                scanner.close();
+                break;
+            }
+        }
     }
 }

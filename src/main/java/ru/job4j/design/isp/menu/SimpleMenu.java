@@ -1,9 +1,9 @@
 package ru.job4j.design.isp.menu;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SimpleMenu implements Menu {
+    public static final ActionDelegate STUB_ACTION = System.out::println;
     private final List<MenuItem> rootElements = new ArrayList<>();
 
     @Override
@@ -24,13 +24,7 @@ public class SimpleMenu implements Menu {
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
-        return findItem(itemName).map(i ->
-                new MenuItemInfo(
-                        i.menuItem.getName(),
-                        i.menuItem.getChildren().stream().map(ch -> ch.getName()).collect(Collectors.toList()),
-                        i.menuItem.getActionDelegate(),
-                        i.number)
-        );
+        return findItem(itemName).map(i -> new MenuItemInfo(i.menuItem, i.number));
     }
 
     @Override
