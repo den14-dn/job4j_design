@@ -1,39 +1,41 @@
 package ru.job4j.design.isp.menu;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class SimpleApp {
+    public static final String CONTEXT = """
+        1. Добавить пункт меню
+        2. Вывести меню
+        3. Завершить
+        """;
+    public static final String NAME_PARENT = "Введите имя предка или null: ";
+    public static final String NAME_CHILD = "Введите имя потомка: ";
+
     public static void main(String[] args) {
-        ActionDelegate action = System.out::println;
-
-        List<String> listActions = List.of(
-                "1. Ввести родителя",
-                "2. Ввести потомка",
-                "3. Вывести меню"
-        );
-
         Menu menu = new SimpleMenu();
         MenuPrinter menuPrinter = new SimpleMenuPrinter();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            System.out.println(System.lineSeparator());
+            System.out.println(CONTEXT);
 
-            System.out.println("Введите имя предка или null: ");
-            String parent = scanner.nextLine();
-            System.out.println("Введите потомка: ");
-            String child = scanner.nextLine();
-
-            if (parent.toLowerCase().equals("null")) {
-                parent = Menu.ROOT;
-            }
-            menu.add(parent, child, SimpleMenu.STUB_ACTION);
-
-            System.out.println("Вывести меню: true/false");
-            boolean rst = scanner.nextBoolean();
+            int command = scanner.nextInt();
             scanner.nextLine();
-            if (rst) {
+
+            if (command == 1) {
+                System.out.println(NAME_PARENT);
+                String parent = scanner.nextLine();
+                System.out.println(NAME_CHILD);
+                String child = scanner.nextLine();
+
+                if (parent.toLowerCase().equals("null")) {
+                    parent = Menu.ROOT;
+                }
+                menu.add(parent, child, SimpleMenu.STUB_ACTION);
+            } else if (command == 2) {
                 menuPrinter.print(menu);
+            } else {
                 scanner.close();
                 break;
             }
