@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class SimpleApp {
     public static final String CONTEXT = """
-        1. Добавить пункт меню
-        2. Вывести меню
-        3. Завершить
-        """;
+            1. Добавить пункт меню
+            2. Вывести меню 
+            3. Завершить
+            """;
     public static final String NAME_PARENT = "Введите имя предка или null: ";
     public static final String NAME_CHILD = "Введите имя потомка: ";
 
